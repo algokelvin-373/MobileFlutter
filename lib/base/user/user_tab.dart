@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_flutter/service/user_service.dart';
-import 'package:mobile_flutter/user_bloc.dart';
+import 'package:mobile_flutter/base/user/user_bloc.dart';
 
 
 class UserTab extends StatelessWidget {

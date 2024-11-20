@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_flutter/resource_bloc.dart';
+import 'package:mobile_flutter/base/home/resource_bloc.dart';
 import 'package:mobile_flutter/service/resource_service.dart';
 
 class HomeTab extends StatelessWidget {
