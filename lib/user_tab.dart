@@ -1,43 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_flutter/service/user_service.dart';
+import 'package:mobile_flutter/user_bloc.dart';
 
-import 'model/user.dart';
 
 class UserTab extends StatelessWidget {
   const UserTab({super.key});
 
-  // Sample data for demonstration
-  static const List<User> users = [
-    User(id: 1, name: 'John Doe', photoUrl: 'https://via.placeholder.com/150'),
-    User(id: 2, name: 'Jane Smith', photoUrl: 'https://via.placeholder.com/150'),
-    User(id: 3, name: 'Alice Johnson', photoUrl: 'https://via.placeholder.com/150'),
-    User(id: 4, name: 'Bob Brown', photoUrl: 'https://via.placeholder.com/150'),
-    User(id: 5, name: 'Charlie Adams', photoUrl: 'https://via.placeholder.com/150'),
-    User(id: 6, name: 'Eve Parker', photoUrl: 'https://via.placeholder.com/150'),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          final user = users[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(user.photoUrl),
-              ),
-              title: Text(user.name),
-              subtitle: Text('User ID: ${user.id}'),
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Tapped on ${user.name}')),
-                );
-              },
-            ),
-          );
-        }
+    return BlocProvider(
+      create: (context) => UserBloc(UserService())..add(const FetchUsers(1)),
+      child: Scaffold(
+        body: BlocBuilder<UserBloc, UserState>(
+          builder: (context, state) {
+            if (state is UserLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is UserLoaded) {
+              final users = state.users;
+              return ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  final user = users[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(user.avatar),
+                    ),
+                    title: Text('${user.firstName} ${user.lastName}'),
+                    subtitle: Text(user.email),
+                  );
+                },
+              );
+            } else if (state is UserError) {
+              return Center(child: Text('Error: ${state.message}'));
+            }
+            return const Center(child: Text('No data available'));
+          },
+        ),
+      ),
     );
   }
-
 }
