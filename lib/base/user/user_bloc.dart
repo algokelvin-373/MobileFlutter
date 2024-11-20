@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobile_flutter/service/user_service.dart';
 
-import 'model/user.dart';
+import '../../model/user.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
